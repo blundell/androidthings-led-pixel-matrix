@@ -62,8 +62,8 @@ public class GpioProxy {
             busRowAddressC = service.openGpio("BCM5");
             busRowAddressD = service.openGpio("BCM6");
             busLedR1 = service.openGpio("BCM21");
-            busLedB1 = service.openGpio("BCM20");
             busLedG1 = service.openGpio("BCM16");
+            busLedB1 = service.openGpio("BCM20");
             busLedR2 = service.openGpio("BCM22");
             busLedG2 = service.openGpio("BCM27");
             busLedB2 = service.openGpio("BCM17");
@@ -75,8 +75,8 @@ public class GpioProxy {
             setGpioPinHigh(busRowAddressC);
             setGpioPinHigh(busRowAddressD);
             setGpioPinHigh(busLedR1);
-            setGpioPinHigh(busLedB1);
             setGpioPinHigh(busLedG1);
+            setGpioPinHigh(busLedB1);
             setGpioPinHigh(busLedR2);
             setGpioPinHigh(busLedG2);
             setGpioPinHigh(busLedB2);
