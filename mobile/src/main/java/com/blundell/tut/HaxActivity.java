@@ -25,6 +25,7 @@ public class HaxActivity extends Activity {
         rgbMatrixPanel.clearDisplay();
         handler.post(hax);
 
+        // A square
 //        rgbMatrixPanel.drawPixel(3, 3, Color.YELLOW);
 //        rgbMatrixPanel.drawPixel(4, 3, Color.YELLOW);
 //        rgbMatrixPanel.drawPixel(5, 3, Color.YELLOW);
