@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class HaxActivity extends Activity {
@@ -14,7 +13,7 @@ public class HaxActivity extends Activity {
     private RGBmatrixPanel rgbMatrixPanel;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("!!!", "I'm running");
 
