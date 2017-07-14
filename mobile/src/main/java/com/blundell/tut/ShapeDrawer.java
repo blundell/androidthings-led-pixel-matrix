@@ -1,13 +1,13 @@
 package com.blundell.tut;
 
-public class ShapeDrawer {
+class ShapeDrawer {
 
     private final int width;
     private final int height;
     private final int pwmBits;
     private final RGBmatrixPanel.Display[] plane;
 
-    public ShapeDrawer(int width, int height, int pwmBits, RGBmatrixPanel.Display[] plane) {
+    ShapeDrawer(int width, int height, int pwmBits, RGBmatrixPanel.Display[] plane) {
         this.width = width;
         this.height = height;
         this.pwmBits = pwmBits;
@@ -17,7 +17,7 @@ public class ShapeDrawer {
     /**
      * Clear the inside of the given Rectangle.
      */
-    public void clearRect(int fx, int fy, int fw, int fh) {
+    void clearRect(int fx, int fy, int fw, int fh) {
         int maxX, maxY;
         maxX = (fx + fw) > width ? width : (fx + fw);
         maxY = (fy + fh) > height ? height : (fy + fh);
@@ -43,7 +43,7 @@ public class ShapeDrawer {
         }
     }
 
-    public void drawPixel(int x, int y, int color) {
+    void drawPixel(int x, int y, int color) {
         if (x >= width || y >= height) {
             return;
         }
@@ -97,7 +97,7 @@ public class ShapeDrawer {
     /**
      * Bresenham's Line Algorithm
      */
-    public void drawLine(int x0, int y0, int x1, int y1, int color) {
+    void drawLine(int x0, int y0, int x1, int y1, int color) {
         boolean steep = Math.abs(y1 - y0) > Math.abs(x1 - x0);
 
         if (steep) {
@@ -148,31 +148,31 @@ public class ShapeDrawer {
     }
 
     // Draw a vertical line
-    public void drawVLine(int x, int y, int h, int color) {
+    void drawVLine(int x, int y, int h, int color) {
         drawLine(x, y, x, y + h - 1, color);
     }
 
     // Draw a horizontal line
-    public void drawHLine(int x, int y, int w, int color) {
+    void drawHLine(int x, int y, int w, int color) {
         drawLine(x, y, x + w - 1, y, color);
     }
 
     // Draw the outline of a rectangle (no fill)
-    public void drawRect(int x, int y, int w, int h, int color) {
+    void drawRect(int x, int y, int w, int h, int color) {
         drawHLine(x, y, w, color);
         drawHLine(x, y + h - 1, w, color);
         drawVLine(x, y, h, color);
         drawVLine(x + w - 1, y, h, color);
     }
 
-    public void fillRect(int x, int y, int w, int h, int color) {
+    void fillRect(int x, int y, int w, int h, int color) {
         for (int i = x; i < x + w; i++) {
             drawVLine(i, y, h, color);
         }
     }
 
     // Draw a rounded rectangle with radius r.
-    public void drawRoundRect(int x, int y, int w, int h, int r, int color) {
+    void drawRoundRect(int x, int y, int w, int h, int r, int color) {
         drawHLine(x + r, y, w - 2 * r, color);
         drawHLine(x + r, y + h - 1, w - 2 * r, color);
         drawVLine(x, y + r, h - 2 * r, color);
@@ -184,7 +184,7 @@ public class ShapeDrawer {
         drawCircleQuadrant(x + r, y + h - r - 1, r, 8, color);
     }
 
-    public void fillRoundRect(int x, int y, int w, int h, int r, int color) {
+    void fillRoundRect(int x, int y, int w, int h, int r, int color) {
         fillRect(x + r, y, w - 2 * r, h, color);
 
         fillCircleHalf(x + r, y + r, r, 1, h - 2 * r - 1, color);
@@ -227,7 +227,7 @@ public class ShapeDrawer {
     }
 
     // Draw one of the four quadrants of a circle.
-    public void drawCircleQuadrant(int x, int y, int r, int quadrant, int color) {
+    void drawCircleQuadrant(int x, int y, int r, int quadrant, int color) {
 //        int16_t f = 1 - r;
 //        int16_t ddFx = 1;
 //        int16_t ddFy = -2 * r;
@@ -271,12 +271,12 @@ public class ShapeDrawer {
 //        }
     }
 
-    public void fillCircle(int x, int y, int r, int color) {
+    void fillCircle(int x, int y, int r, int color) {
         drawVLine(x, y - r, 2 * r + 1, color);
         fillCircleHalf(x, y, r, 3, 0, color);
     }
 
-    public void fillCircleHalf(int x, int y, int r, int half, int stretch, int color) {
+    void fillCircleHalf(int x, int y, int r, int half, int stretch, int color) {
 //        int16_t f = 1 - r;
 //        int16_t ddFx = 1;
 //        int16_t ddFy = -2 * r;
@@ -309,9 +309,9 @@ public class ShapeDrawer {
     }
 
     // Draw an Arc
-    public void drawArc(int x, int y, int r,
-                        float startAngle, float endAngle,
-                        int color) {
+    void drawArc(int x, int y, int r,
+                 float startAngle, float endAngle,
+                 int color) {
 //        // Convert degrees to radians
 //        float degreesPerRadian = M_PI / 180;
 //
@@ -335,7 +335,7 @@ public class ShapeDrawer {
     }
 
     // Draw the outline of a wedge. //TODO: add inner radius
-    public void drawWedge(int x, int y, int r, float startAngle, float endAngle, int color) {
+    void drawWedge(int x, int y, int r, float startAngle, float endAngle, int color) {
 //        // Convert degrees to radians
 //        float degreesPerRadian = M_PI / 180;
 //
@@ -369,9 +369,9 @@ public class ShapeDrawer {
 //        drawLine(prevX, prevY, x, y, color);
     }
 
-    public void drawTriangle(int x1, int y1,
-                             int x2, int y2,
-                             int x3, int y3, int color) {
+    void drawTriangle(int x1, int y1,
+                      int x2, int y2,
+                      int x3, int y3, int color) {
         drawLine(x1, y1, x2, y2, color);
         drawLine(x2, y2, x3, y3, color);
         drawLine(x3, y3, x1, y1, color);

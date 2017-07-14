@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * https://cdn-learn.adafruit.com/downloads/pdf/32x16-32x32-rgb-led-matrix.pdf
  */
-public class RGBmatrixPanel {
+class RGBmatrixPanel {
 
     /**
      * WIDTH and HEIGHT of the RBG Matrix.
@@ -122,11 +122,11 @@ public class RGBmatrixPanel {
     /*
      * Clear the entire display
      */
-    public void clearDisplay() {
+    void clearDisplay() {
         clearRect(0, 0, WIDTH, HEIGHT);
     }
 
-    public void updateDisplay() {
+    void updateDisplay() {
         for (int row = 0; row < ROWS_PER_SUB_PANEL; ++row) {
             // Rows can't be switched very quickly without ghosting,
             // so we do the full PWM of one row before switching rows.
@@ -134,7 +134,7 @@ public class RGBmatrixPanel {
                 TwoRows rowData = plane[b].row[row];
 
                 // Clock in the row. The time this takes is the smallest time we can
-                // leave the LEDs on, thus the smallest timeconstant we can use for
+                // leave the LEDs on, thus the smallest time-constant we can use for
                 // PWM (doubling the sleep time with each bit).
                 // So this is the critical path; I'd love to know if we can employ some
                 // DMA techniques to speed this up.
@@ -143,7 +143,7 @@ public class RGBmatrixPanel {
                 // However, in particular for longer chaining, it seems we need some more
                 // wait time to settle.
 
-//                long stabilizeWait = TimeUnit.NANOSECONDS.toMillis(156); //TODO: mateo was 256
+//                long stabilizeWait = TimeUnit.NANOSECONDS.toMillis(156); //TODO: original fork was 256
 
                 for (int col = 0; col < COLUMN_COUNT; ++col) {
                     PixelPins colPins = rowData.column[col];
@@ -227,7 +227,7 @@ public class RGBmatrixPanel {
     }
 
     // Clear the inside of the given Rectangle.
-    public void clearRect(int fx, int fy, int fw, int fh) {
+    private void clearRect(int fx, int fy, int fw, int fh) {
         shapeDrawer.clearRect(fx, fy, fw, fh);
     }
 
@@ -437,7 +437,7 @@ public class RGBmatrixPanel {
         fontDrawer.setTextCursor(x, y);
     }
 
-    public void setFontColor(int color) {
+    void setFontColor(int color) {
         fontDrawer.setFontColor(color);
     }
 
@@ -449,7 +449,7 @@ public class RGBmatrixPanel {
         fontDrawer.setWordWrap(wrap);
     }
 
-    public void writeText(String text) {
+    void writeText(String text) {
         fontDrawer.writeText(text);
     }
 
