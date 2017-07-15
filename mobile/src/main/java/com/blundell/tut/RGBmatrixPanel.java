@@ -115,8 +115,9 @@ class RGBmatrixPanel {
             plane[i] = display;
         }
 
-        shapeDrawer = new ShapeDrawer(WIDTH, HEIGHT, PWM_BITS, plane);
-        fontDrawer = new FontDrawer(WIDTH, shapeDrawer);
+        PixelDrawer pixelDrawer = new PwmPixelDrawer(WIDTH, HEIGHT, PWM_BITS, plane);
+        shapeDrawer = new ShapeDrawer(WIDTH, HEIGHT, PWM_BITS, pixelDrawer);
+        fontDrawer = new FontDrawer(WIDTH, pixelDrawer);
     }
 
     /*

@@ -1,9 +1,9 @@
 package com.blundell.tut;
 
-public class FontDrawer {
+class FontDrawer {
 
     private final int displayWidth;
-    private final ShapeDrawer shapeDrawer;
+    private final PixelDrawer pixelDrawer;
 
     private int textCursorX, textCursorY;
     private int fontColor;
@@ -12,9 +12,9 @@ public class FontDrawer {
     private int fontHeight;
     private boolean wordWrap;
 
-    public FontDrawer(int displayWidth, ShapeDrawer shapeDrawer) {
+    FontDrawer(int displayWidth, PixelDrawer pixelDrawer) {
         this.displayWidth = displayWidth;
-        this.shapeDrawer = shapeDrawer;
+        this.pixelDrawer = pixelDrawer;
 
         textCursorX = 0;
         textCursorY = 0;
@@ -25,12 +25,12 @@ public class FontDrawer {
         wordWrap = true;
     }
 
-    void setTextCursor(int x, int y) {
+    public void setTextCursor(int x, int y) {
         textCursorX = x;
         textCursorY = y;
     }
 
-    void setFontColor(int color) {
+    public void setFontColor(int color) {
         fontColor = color;
     }
 
@@ -113,7 +113,7 @@ public class FontDrawer {
 
             for (int j = 0; j < fontHeight + 1; j++) {
                 if ((line & 0x1) == 1) {
-                    shapeDrawer.drawPixel(x + i, y + j, color);
+                    pixelDrawer.drawPixel(x + i, y + j, color);
                 }
 
                 line >>= 1;

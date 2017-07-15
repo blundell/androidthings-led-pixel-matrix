@@ -1,23 +1,27 @@
 package com.blundell.tut;
 
+import android.graphics.Color;
+
 class ShapeDrawer {
 
     private final int width;
     private final int height;
     private final int pwmBits;
-    private final RGBmatrixPanel.Display[] plane;
+    private final PixelDrawer pixelDrawer;
 
-    ShapeDrawer(int width, int height, int pwmBits, RGBmatrixPanel.Display[] plane) {
+    ShapeDrawer(int width, int height,
+                int pwmBits,
+                PixelDrawer pixelDrawer) {
         this.width = width;
         this.height = height;
         this.pwmBits = pwmBits;
-        this.plane = plane;
+        this.pixelDrawer = pixelDrawer;
     }
 
     /**
      * Clear the inside of the given Rectangle.
      */
-    void clearRect(int fx, int fy, int fw, int fh) {
+    public void clearRect(int fx, int fy, int fw, int fh) {
         int maxX, maxY;
         maxX = (fx + fw) > width ? width : (fx + fw);
         maxY = (fy + fh) > height ? height : (fy + fh);
@@ -25,71 +29,8 @@ class ShapeDrawer {
         for (int b = pwmBits - 1; b >= 0; b--) {
             for (int x = fx; x < maxX; x++) {
                 for (int y = fy; y < maxY; y++) {
-                    RGBmatrixPanel.PixelPins pins = plane[b].row[y & 0xf].column[x];
-
-                    if (y < 16) {
-                        // Upper sub-panel
-                        pins.r1 = false;
-                        pins.g1 = false;
-                        pins.b1 = false;
-                    } else {
-                        // Lower sub-panel
-                        pins.r2 = false;
-                        pins.g2 = false;
-                        pins.b2 = false;
-                    }
+                    pixelDrawer.drawPixel(x, y, Color.BLACK);
                 }
-            }
-        }
-    }
-
-    void drawPixel(int x, int y, int color) {
-        if (x >= width || y >= height) {
-            return;
-        }
-
-        // Four 32x32 panels would be connected like:  [>] [>]
-        //                                             [<] [<]
-        // Which would be 64 columns and 32 rows from L to R, then flipping backwards
-        // for the next 32 rows (and 64 columns).
-        if (y > 31) {
-            x = (byte) (127 - x);
-            y = (byte) (63 - y);
-        }
-
-        // Break out values from structure
-        int red = android.graphics.Color.red(color);
-        int green = android.graphics.Color.green(color);
-        int blue = android.graphics.Color.blue(color);
-
-        //TODO: Adding Gamma correction slowed down the PWM and made
-        //      the matrix flicker, so I'm removing it for now.
-
-        // Gamma correct
-        //red   = pgm_read_byte(&Gamma[red]);
-        //green = pgm_read_byte(&Gamma[green]);
-        //blue  = pgm_read_byte(&Gamma[blue]);
-
-        // Scale to the number of bit planes, so MSB matches MSB of PWM.
-        red >>= 8 - pwmBits;
-        green >>= 8 - pwmBits;
-        blue >>= 8 - pwmBits;
-
-        // Set RGB pins for this pixel in each PWM bit plane.
-        for (int b = 0; b < pwmBits; b++) {
-            byte mask = (byte) (1 << b);
-            RGBmatrixPanel.PixelPins pins = plane[b].row[y & 0xf].column[x];
-
-            if (y < 16) {
-                // Upper sub-panel
-                pins.r1 = ((red & mask) == mask);
-                pins.g1 = ((green & mask) == mask);
-                pins.b1 = ((blue & mask) == mask);
-            } else {
-                // Lower sub-panel
-                pins.r2 = ((red & mask) == mask);
-                pins.g2 = ((green & mask) == mask);
-                pins.b2 = ((blue & mask) == mask);
             }
         }
     }
@@ -97,7 +38,7 @@ class ShapeDrawer {
     /**
      * Bresenham's Line Algorithm
      */
-    void drawLine(int x0, int y0, int x1, int y1, int color) {
+    public void drawLine(int x0, int y0, int x1, int y1, int color) {
         boolean steep = Math.abs(y1 - y0) > Math.abs(x1 - x0);
 
         if (steep) {
@@ -125,9 +66,9 @@ class ShapeDrawer {
 
         for (; x0 <= x1; x0++) {
             if (steep) {
-                drawPixel(y0, x0, color);
+                pixelDrawer.drawPixel(y0, x0, color);
             } else {
-                drawPixel(x0, y0, color);
+                pixelDrawer.drawPixel(x0, y0, color);
             }
 
             err -= dy;
@@ -148,31 +89,31 @@ class ShapeDrawer {
     }
 
     // Draw a vertical line
-    void drawVLine(int x, int y, int h, int color) {
+    public void drawVLine(int x, int y, int h, int color) {
         drawLine(x, y, x, y + h - 1, color);
     }
 
     // Draw a horizontal line
-    void drawHLine(int x, int y, int w, int color) {
+    public void drawHLine(int x, int y, int w, int color) {
         drawLine(x, y, x + w - 1, y, color);
     }
 
     // Draw the outline of a rectangle (no fill)
-    void drawRect(int x, int y, int w, int h, int color) {
+    public void drawRect(int x, int y, int w, int h, int color) {
         drawHLine(x, y, w, color);
         drawHLine(x, y + h - 1, w, color);
         drawVLine(x, y, h, color);
         drawVLine(x + w - 1, y, h, color);
     }
 
-    void fillRect(int x, int y, int w, int h, int color) {
+    public void fillRect(int x, int y, int w, int h, int color) {
         for (int i = x; i < x + w; i++) {
             drawVLine(i, y, h, color);
         }
     }
 
     // Draw a rounded rectangle with radius r.
-    void drawRoundRect(int x, int y, int w, int h, int r, int color) {
+    public void drawRoundRect(int x, int y, int w, int h, int r, int color) {
         drawHLine(x + r, y, w - 2 * r, color);
         drawHLine(x + r, y + h - 1, w - 2 * r, color);
         drawVLine(x, y + r, h - 2 * r, color);
@@ -184,7 +125,7 @@ class ShapeDrawer {
         drawCircleQuadrant(x + r, y + h - r - 1, r, 8, color);
     }
 
-    void fillRoundRect(int x, int y, int w, int h, int r, int color) {
+    public void fillRoundRect(int x, int y, int w, int h, int r, int color) {
         fillRect(x + r, y, w - 2 * r, h, color);
 
         fillCircleHalf(x + r, y + r, r, 1, h - 2 * r - 1, color);
@@ -192,17 +133,17 @@ class ShapeDrawer {
     }
 
     // Draw the outline of a cirle (no fill) - Midpoint Circle Algorithm
-    void drawCircle(int x, int y, int r, int color) {
+    public void drawCircle(int x, int y, int r, int color) {
 //        int16_t f = 1 - r;
 //        int16_t ddFx = 1;
 //        int16_t ddFy = -2 * r;
 //        int16_t x1 = 0;
 //        int16_t y1 = r;
 //
-//        drawPixel(x, y + r, color);
-//        drawPixel(x, y - r, color);
-//        drawPixel(x + r, y, color);
-//        drawPixel(x - r, y, color);
+//        pixelDrawer.drawPixel(x, y + r, color);
+//        pixelDrawer.drawPixel(x, y - r, color);
+//        pixelDrawer.drawPixel(x + r, y, color);
+//        pixelDrawer.drawPixel(x - r, y, color);
 //
 //        while (x1 < y1) {
 //            if (f >= 0) {
@@ -215,19 +156,19 @@ class ShapeDrawer {
 //            ddFx += 2;
 //            f += ddFx;
 //
-//            drawPixel(x + x1, y + y1, color);
-//            drawPixel(x - x1, y + y1, color);
-//            drawPixel(x + x1, y - y1, color);
-//            drawPixel(x - x1, y - y1, color);
-//            drawPixel(x + y1, y + x1, color);
-//            drawPixel(x - y1, y + x1, color);
-//            drawPixel(x + y1, y - x1, color);
-//            drawPixel(x - y1, y - x1, color);
+//            pixelDrawer.drawPixel(x + x1, y + y1, color);
+//            pixelDrawer.drawPixel(x - x1, y + y1, color);
+//            pixelDrawer.drawPixel(x + x1, y - y1, color);
+//            pixelDrawer.drawPixel(x - x1, y - y1, color);
+//            pixelDrawer.drawPixel(x + y1, y + x1, color);
+//            pixelDrawer.drawPixel(x - y1, y + x1, color);
+//            pixelDrawer.drawPixel(x + y1, y - x1, color);
+//            pixelDrawer.drawPixel(x - y1, y - x1, color);
 //        }
     }
 
     // Draw one of the four quadrants of a circle.
-    void drawCircleQuadrant(int x, int y, int r, int quadrant, int color) {
+    public void drawCircleQuadrant(int x, int y, int r, int quadrant, int color) {
 //        int16_t f = 1 - r;
 //        int16_t ddFx = 1;
 //        int16_t ddFy = -2 * r;
@@ -247,36 +188,36 @@ class ShapeDrawer {
 //
 //            //Upper Left
 //            if (quadrant & 0x1) {
-//                drawPixel(x - y1, y - x1, color);
-//                drawPixel(x - x1, y - y1, color);
+//                pixelDrawer.drawPixel(x - y1, y - x1, color);
+//                pixelDrawer.drawPixel(x - x1, y - y1, color);
 //            }
 //
 //            //Upper Right
 //            if (quadrant & 0x2) {
-//                drawPixel(x + x1, y - y1, color);
-//                drawPixel(x + y1, y - x1, color);
+//                pixelDrawer.drawPixel(x + x1, y - y1, color);
+//                pixelDrawer.drawPixel(x + y1, y - x1, color);
 //            }
 //
 //            //Lower Right
 //            if (quadrant & 0x4) {
-//                drawPixel(x + x1, y + y1, color);
-//                drawPixel(x + y1, y + x1, color);
+//                pixelDrawer.drawPixel(x + x1, y + y1, color);
+//                pixelDrawer.drawPixel(x + y1, y + x1, color);
 //            }
 //
 //            //Lower Left
 //            if (quadrant & 0x8) {
-//                drawPixel(x - y1, y + x1, color);
-//                drawPixel(x - x1, y + y1, color);
+//                pixelDrawer.drawPixel(x - y1, y + x1, color);
+//                pixelDrawer.drawPixel(x - x1, y + y1, color);
 //            }
 //        }
     }
 
-    void fillCircle(int x, int y, int r, int color) {
+    public void fillCircle(int x, int y, int r, int color) {
         drawVLine(x, y - r, 2 * r + 1, color);
         fillCircleHalf(x, y, r, 3, 0, color);
     }
 
-    void fillCircleHalf(int x, int y, int r, int half, int stretch, int color) {
+    public void fillCircleHalf(int x, int y, int r, int half, int stretch, int color) {
 //        int16_t f = 1 - r;
 //        int16_t ddFx = 1;
 //        int16_t ddFy = -2 * r;
@@ -309,9 +250,9 @@ class ShapeDrawer {
     }
 
     // Draw an Arc
-    void drawArc(int x, int y, int r,
-                 float startAngle, float endAngle,
-                 int color) {
+    public void drawArc(int x, int y, int r,
+                        float startAngle, float endAngle,
+                        int color) {
 //        // Convert degrees to radians
 //        float degreesPerRadian = M_PI / 180;
 //
@@ -335,7 +276,7 @@ class ShapeDrawer {
     }
 
     // Draw the outline of a wedge. //TODO: add inner radius
-    void drawWedge(int x, int y, int r, float startAngle, float endAngle, int color) {
+    public void drawWedge(int x, int y, int r, float startAngle, float endAngle, int color) {
 //        // Convert degrees to radians
 //        float degreesPerRadian = M_PI / 180;
 //
@@ -369,17 +310,17 @@ class ShapeDrawer {
 //        drawLine(prevX, prevY, x, y, color);
     }
 
-    void drawTriangle(int x1, int y1,
-                      int x2, int y2,
-                      int x3, int y3, int color) {
+    public void drawTriangle(int x1, int y1,
+                             int x2, int y2,
+                             int x3, int y3, int color) {
         drawLine(x1, y1, x2, y2, color);
         drawLine(x2, y2, x3, y3, color);
         drawLine(x3, y3, x1, y1, color);
     }
 
-    void fillTriangle(int x1, int y1,
-                      int x2, int y2,
-                      int x3, int y3, int color) {
+    public void fillTriangle(int x1, int y1,
+                             int x2, int y2,
+                             int x3, int y3, int color) {
 //        int16_t a, b, y, last;
 //
 //        // Sort coordinates by Y order (y3 >= y2 >= y1)
@@ -475,7 +416,7 @@ class ShapeDrawer {
     }
 
     // Special method to create a color wheel on the display.
-    void drawColorWheel() {
+    public void drawColorWheel() {
 //        int x, y, hue;
 //        float dx, dy, d;
 //        uint8_t sat, val;
@@ -516,8 +457,12 @@ class ShapeDrawer {
 //                    color.blue = 0;
 //                }
 //
-//                drawPixel(x, y, color);
+//                pixelDrawer.drawPixel(x, y, color);
 //            }
 //        }
+    }
+
+    public void drawPixel(int x, int y, int color) {
+        pixelDrawer.drawPixel(x, y, color);
     }
 }

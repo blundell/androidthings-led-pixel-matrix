@@ -5,7 +5,7 @@ package com.blundell.tut;
  * includes characters 0x20 (32) - 0x7F (127)
  */
 public class Fonts {
-    static final char[] FONT_3_X_5 = {
+    public static final char[] FONT_3_X_5 = {
             0x00, 0x00, 0x00,  // (space)
             0x17, 0x00, 0x00,  // !
             0x03, 0x00, 0x03,  // "
@@ -104,7 +104,7 @@ public class Fonts {
             0x1F, 0x1F, 0x1F   // 
     };
 
-    static final char[] FONT_4_X_6 = {
+    public static final char[] FONT_4_X_6 = {
             0x00, 0x00, 0x00, 0x00, // (space)
             0x00, 0x2F, 0x00, 0x00, // !
             0x03, 0x00, 0x03, 0x00, // "
@@ -203,7 +203,7 @@ public class Fonts {
             0x3F, 0x35, 0x35, 0x3F  // 
     };
 
-    static final char[] FONT_5_X_7 = {
+    public static final char[] FONT_5_X_7 = {
             0x00, 0x00, 0x00, 0x00, 0x00,// (space)
             0x00, 0x00, 0x5F, 0x00, 0x00,// !
             0x00, 0x07, 0x00, 0x07, 0x00,// "
