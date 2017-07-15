@@ -1,13 +1,13 @@
 package com.blundell.tut;
 
-class PwmPixelDrawer implements PixelDrawer {
+class PixelDrawerDisplayPlane implements PixelDrawer {
 
     private final int width;
     private final int height;
     private final int pwmBits;
     private final RGBmatrixPanel.Display[] plane;
 
-    PwmPixelDrawer(int width, int height, int pwmBits, RGBmatrixPanel.Display[] plane) {
+    PixelDrawerDisplayPlane(int width, int height, int pwmBits, RGBmatrixPanel.Display[] plane) {
         this.width = width;
         this.height = height;
         this.pwmBits = pwmBits;
