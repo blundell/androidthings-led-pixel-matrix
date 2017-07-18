@@ -20,8 +20,8 @@ class RGBmatrixPanel {
      * WIDTH and HEIGHT of the RBG Matrix.
      * If chaining multiple boards together, this is the overall WIDTH x HEIGHT.
      */
-    private static final int WIDTH = 32;
-    private static final int HEIGHT = 32;
+    static final int WIDTH = 32;
+    static final int HEIGHT = 32;
 
     /**
      * The 32x32 RGB Matrix is broken into two 16x32 sub-panels.
