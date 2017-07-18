@@ -144,9 +144,9 @@ public class AndroidThingsGpioProxy implements GpioProxy {
             busLedG1.setValue(pins.g1);
             busLedB1.setValue(pins.b1);
 
-//            busLedR2.setValue(pins.r2);
-//            busLedG2.setValue(pins.g2);
-//            busLedB2.setValue(pins.b2);
+            busLedR2.setValue(pins.r2);
+            busLedG2.setValue(pins.g2);
+            busLedB2.setValue(pins.b2);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
