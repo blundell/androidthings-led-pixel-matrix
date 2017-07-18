@@ -113,7 +113,7 @@ public class Tests {
         rgbMatrixPanel.drawPixel(29, 29, Color.RED);
     }
 
-    public static void writeHelloWorld(RGBmatrixPanelNoObjects rgbMatrixPanel) {
+    public static void writeHelloWorld(RGBmatrixPanel rgbMatrixPanel) {
         rgbMatrixPanel.setFontColor(Color.BLUE);
         rgbMatrixPanel.writeText("Hello World");
     }

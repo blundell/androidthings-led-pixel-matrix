@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * https://cdn-learn.adafruit.com/downloads/pdf/32x16-32x32-rgb-led-matrix.pdf
  */
-class RGBmatrixPanelNoObjects {
+class RGBmatrixPanel {
 
     /**
      * WIDTH and HEIGHT of the RBG Matrix.
@@ -95,7 +95,7 @@ class RGBmatrixPanelNoObjects {
             (128 * ROW_CLOCK_TIME) - ROW_CLOCK_TIME, // too much flicker.
     };
 
-    public RGBmatrixPanelNoObjects(GpioProxy gpioProxy) {
+    public RGBmatrixPanel(GpioProxy gpioProxy) {
         this.gpioProxy = gpioProxy;
 
         PixelDrawer pixelDrawer = new PixelDrawerNoObjects(WIDTH, HEIGHT, PWM_BITS, displayRowColumn);
