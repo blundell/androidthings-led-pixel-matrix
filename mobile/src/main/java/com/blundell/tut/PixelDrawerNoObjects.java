@@ -54,11 +54,11 @@ class PixelDrawerNoObjects implements PixelDrawer {
         }
     }
 
-    private void writePixel(int x, int y, int red, int green, int blue, int b) {
+    private void writePixel(int col, int row, int red, int green, int blue, int b) {
         byte mask = (byte) (1 << b);
-        byte pins = plane[b][y & 0xf][x];
+        byte pins = plane[b][row & 0xf][col];
 
-        if (y < 16) {
+        if (row < 16) {
             // Upper sub-panel
             pins |= ((red & mask) == mask ? 1 : 0) << 1;
             pins |= ((green & mask) == mask ? 1 : 0) << 2;
@@ -69,6 +69,6 @@ class PixelDrawerNoObjects implements PixelDrawer {
             pins |= ((green & mask) == mask ? 1 : 0) << 5;
             pins |= ((blue & mask) == mask ? 1 : 0) << 6;
         }
-        plane[b][y & 0xf][x] = pins;
+        plane[b][row & 0xf][col] = pins;
     }
 }
