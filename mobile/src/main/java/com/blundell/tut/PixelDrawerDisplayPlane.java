@@ -24,9 +24,9 @@ class PixelDrawerDisplayPlane implements PixelDrawer {
         //                                             [<] [<]
         // Which would be 64 columns and 32 rows from L to R, then flipping backwards
         // for the next 32 rows (and 64 columns).
-        if (row > RGBmatrixPanel.HEIGHT - 1) {
-            col = (((RGBmatrixPanel.WIDTH * 4) - 1) - col);
-            row = (((RGBmatrixPanel.HEIGHT * 2) - 1) - row);
+        if (row > 31) {
+            col = 127 - col;
+            row = 63 - row;
         }
 
         // Break out values from structure
