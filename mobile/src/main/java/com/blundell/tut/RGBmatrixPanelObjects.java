@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * https://cdn-learn.adafruit.com/downloads/pdf/32x16-32x32-rgb-led-matrix.pdf
  */
-class RGBmatrixPanel {
+class RGBmatrixPanelObjects {
 
     /**
      * WIDTH and HEIGHT of the RBG Matrix.
@@ -100,7 +100,7 @@ class RGBmatrixPanel {
             (128 * ROW_CLOCK_TIME) - ROW_CLOCK_TIME, // too much flicker.
     };
 
-    public RGBmatrixPanel(GpioProxy gpioProxy) {
+    public RGBmatrixPanelObjects(GpioProxy gpioProxy) {
         this.gpioProxy = gpioProxy;
 
         for (int p = 0; p < plane.length; p++) {
@@ -128,10 +128,13 @@ class RGBmatrixPanel {
     }
 
     void updateDisplay() {
+//        TimingLogger timingLogger = new TimingLogger("RGB", "updateDisplay");
         for (int row = 0; row < ROWS_PER_SUB_PANEL; ++row) {
+//            timingLogger.addSplit("loop row " + row);
             // Rows can't be switched very quickly without ghosting,
             // so we do the full PWM of one row before switching rows.
             for (int b = 0; b < PWM_BITS; b++) {
+//                timingLogger.addSplit("loop pwm " + b);
                 TwoRows rowData = plane[b].row[row];
 
                 // Clock in the row. The time this takes is the smallest time we can
@@ -147,6 +150,7 @@ class RGBmatrixPanel {
 //                long stabilizeWait = TimeUnit.NANOSECONDS.toMillis(156); //TODO: original fork was 256
 
                 for (int col = 0; col < COLUMN_COUNT; ++col) {
+//                    timingLogger.addSplit("loop col " + col);
                     PixelPins colPins = rowData.column[col];
 
                     // Clear bits (clock)
@@ -161,6 +165,7 @@ class RGBmatrixPanel {
                     gpioProxy.writeClock(true);
                     gpioProxy.writeClock(false);
 //                    sleep(stabilizeWait);
+//                    timingLogger.addSplit("done loop col " + col);
                 }
 
                 // switch off while strobe (latch).
@@ -180,8 +185,11 @@ class RGBmatrixPanel {
 
                 // If we use less pins, then use the upper areas which leaves us more CPU time to do other stuff.
 //                sleep(ROW_SLEEP_NANOS[b + (7 - PWM_BITS)]);
+//                timingLogger.addSplit("done loop pwm " + b);
             }
+//            timingLogger.addSplit("done loop row " + row);
         }
+//        timingLogger.dumpToLog();
     }
 
     private static void sleep(long nanos) {

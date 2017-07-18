@@ -4,15 +4,15 @@ import android.graphics.Color;
 
 public class Tests {
 
-    public static void drawWholeScreen(RGBmatrixPanel rgbMatrixPanel) {
-        for (int col = 0; col < RGBmatrixPanel.WIDTH; col++) {
-            for (int row = 0; row < RGBmatrixPanel.HEIGHT; row++) {
+    public static void drawWholeScreen(RGBmatrixPanelObjects rgbMatrixPanel) {
+        for (int row = 0; row < RGBmatrixPanelObjects.HEIGHT; row++) {
+            for (int col = 0; col < RGBmatrixPanelObjects.WIDTH; col++) {
                 rgbMatrixPanel.drawPixel(row, col, Color.WHITE);
             }
         }
     }
 
-    public static void drawThreeSquares(RGBmatrixPanel rgbMatrixPanel) {
+    public static void drawThreeSquares(RGBmatrixPanelObjects rgbMatrixPanel) {
         // A square
         rgbMatrixPanel.drawPixel(3, 3, Color.YELLOW);
         rgbMatrixPanel.drawPixel(4, 3, Color.RED);

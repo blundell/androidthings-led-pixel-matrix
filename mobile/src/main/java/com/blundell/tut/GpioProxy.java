@@ -5,7 +5,7 @@ interface GpioProxy {
 
     void writePixelsSequence(byte pins);
 
-    void writePixel(RGBmatrixPanel.PixelPins pins);
+    void writePixel(RGBmatrixPanelObjects.PixelPins pins);
 
     void writeClock(boolean value);
 

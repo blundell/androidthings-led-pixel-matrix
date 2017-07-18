@@ -9,7 +9,7 @@ import android.util.Log;
 public class HaxActivity extends Activity {
 
     private Handler handler;
-    private RGBmatrixPanel rgbMatrixPanel;
+    private RGBmatrixPanelObjects rgbMatrixPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +20,12 @@ public class HaxActivity extends Activity {
         thread.start();
         handler = new Handler(thread.getLooper());
 
-        rgbMatrixPanel = new RGBmatrixPanel(new AndroidThingsGpioProxy());
+        rgbMatrixPanel = new RGBmatrixPanelObjects(new AndroidThingsGpioProxy());
 //        rgbMatrixPanel.clearDisplay();
         handler.post(hax);
 
-        Tests.drawWholeScreen(rgbMatrixPanel);
-//        Tests.drawThreeSquares(rgbMatrixPanel);
+//        Tests.drawWholeScreen(rgbMatrixPanel);
+        Tests.drawThreeSquares(rgbMatrixPanel);
 //        Tests.writeHelloWorld(rgbMatrixPanel);
     }
 

@@ -138,7 +138,7 @@ public class AndroidThingsGpioProxy implements GpioProxy {
     }
 
     @Override
-    public void writePixel(RGBmatrixPanel.PixelPins pins) {
+    public void writePixel(RGBmatrixPanelObjects.PixelPins pins) {
         try {
             busLedR1.setValue(pins.r1);
             busLedG1.setValue(pins.g1);

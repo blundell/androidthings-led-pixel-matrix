@@ -29,7 +29,7 @@ public class LoggingGpioProxy implements GpioProxy {
     }
 
     @Override
-    public void writePixel(RGBmatrixPanel.PixelPins pins) {
+    public void writePixel(RGBmatrixPanelObjects.PixelPins pins) {
         log("pins : " + pins);
         log("value : " + pins.r1);
         log("value : " + pins.g1);

@@ -5,9 +5,9 @@ class PixelDrawerDisplayPlane implements PixelDrawer {
     private final int width;
     private final int height;
     private final int pwmBits;
-    private final RGBmatrixPanel.Display[] plane;
+    private final RGBmatrixPanelObjects.Display[] plane;
 
-    PixelDrawerDisplayPlane(int width, int height, int pwmBits, RGBmatrixPanel.Display[] plane) {
+    PixelDrawerDisplayPlane(int width, int height, int pwmBits, RGBmatrixPanelObjects.Display[] plane) {
         this.width = width;
         this.height = height;
         this.pwmBits = pwmBits;
@@ -55,7 +55,7 @@ class PixelDrawerDisplayPlane implements PixelDrawer {
 
     private void writePixel(int row, int col, int red, int green, int blue, int b) {
         byte mask = (byte) (1 << b);
-        RGBmatrixPanel.PixelPins pins = plane[b].row[row & 0xf].column[col];
+        RGBmatrixPanelObjects.PixelPins pins = plane[b].row[row & 0xf].column[col];
 
         if (row < 16) {
             // Upper sub-panel
