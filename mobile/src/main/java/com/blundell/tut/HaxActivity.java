@@ -1,7 +1,6 @@
 package com.blundell.tut;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -21,52 +20,24 @@ public class HaxActivity extends Activity {
         thread.start();
         handler = new Handler(thread.getLooper());
 
-        rgbMatrixPanel = new RGBmatrixPanel(new GpioProxy());
-        rgbMatrixPanel.clearDisplay();
+        rgbMatrixPanel = new RGBmatrixPanel(new AndroidThingsGpioProxy());
+//        rgbMatrixPanel.clearDisplay();
         handler.post(hax);
 
-        // A square
-//        rgbMatrixPanel.drawPixel(3, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(4, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(5, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(6, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(7, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(8, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 3, Color.YELLOW);
-//
-//        rgbMatrixPanel.drawPixel(3, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(3, 4, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(3, 5, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(3, 6, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(3, 7, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(3, 8, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(3, 9, Color.YELLOW);
-//
-//        rgbMatrixPanel.drawPixel(9, 3, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 4, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 5, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 6, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 7, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 8, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 9, Color.YELLOW);
-//
-//        rgbMatrixPanel.drawPixel(3, 9, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(4, 9, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(5, 9, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(6, 9, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(7, 9, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(8, 9, Color.YELLOW);
-//        rgbMatrixPanel.drawPixel(9, 9, Color.YELLOW);
-
-        rgbMatrixPanel.setFontColor(Color.YELLOW);
-        rgbMatrixPanel.writeText("Hello?");
+        Tests.drawWholeScreen(rgbMatrixPanel);
+//        Tests.drawThreeSquares(rgbMatrixPanel);
+//        Tests.writeHelloWorld(rgbMatrixPanel);
     }
 
     private final Runnable hax = new Runnable() {
         @Override
         public void run() {
+//            TimingLogger logger = new TimingLogger("RGB", "run");
+//            logger.addSplit("update display");
             rgbMatrixPanel.updateDisplay();
+//            logger.addSplit("updated display");
             handler.post(this);
+//            logger.dumpToLog();
         }
     };
 
