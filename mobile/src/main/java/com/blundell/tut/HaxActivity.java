@@ -25,7 +25,7 @@ public class HaxActivity extends Activity {
         handler.post(hax);
 
 //        Tests.drawWholeScreen(rgbMatrixPanel);
-        Tests.drawThreeSquares(rgbMatrixPanel);
+//        Tests.drawThreeSquares(rgbMatrixPanel);
 //        Tests.writeHelloWorld(rgbMatrixPanel);
     }
 
@@ -34,7 +34,8 @@ public class HaxActivity extends Activity {
         public void run() {
 //            TimingLogger logger = new TimingLogger("RGB", "run");
 //            logger.addSplit("update display");
-            rgbMatrixPanel.updateDisplay();
+//            rgbMatrixPanel.updateDisplay();
+            Tests.drawThreeSquares(rgbMatrixPanel);
 //            logger.addSplit("updated display");
             handler.post(this);
 //            logger.dumpToLog();
