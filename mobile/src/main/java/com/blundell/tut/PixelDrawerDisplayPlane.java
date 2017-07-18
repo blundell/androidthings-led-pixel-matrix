@@ -15,8 +15,8 @@ class PixelDrawerDisplayPlane implements PixelDrawer {
     }
 
     @Override
-    public void drawPixel(int x, int y, int color) {
-        if (x >= width || y >= height) {
+    public void drawPixel(int col, int row, int color) {
+        if (col >= width || row >= height) {
             return;
         }
 
@@ -24,9 +24,9 @@ class PixelDrawerDisplayPlane implements PixelDrawer {
         //                                             [<] [<]
         // Which would be 64 columns and 32 rows from L to R, then flipping backwards
         // for the next 32 rows (and 64 columns).
-        if (y > 31) {
-            x = (byte) (127 - x);
-            y = (byte) (63 - y);
+        if (row > RGBmatrixPanel.HEIGHT - 1) {
+            col = (((RGBmatrixPanel.WIDTH * 4) - 1) - col);
+            row = (((RGBmatrixPanel.HEIGHT * 2) - 1) - row);
         }
 
         // Break out values from structure
@@ -49,20 +49,24 @@ class PixelDrawerDisplayPlane implements PixelDrawer {
 
         // Set RGB pins for this pixel in each PWM bit plane.
         for (int b = 0; b < pwmBits; b++) {
-            byte mask = (byte) (1 << b);
-            RGBmatrixPanel.PixelPins pins = plane[b].row[y & 0xf].column[x];
+            writePixel(row, col, red, green, blue, b);
+        }
+    }
 
-            if (y < 16) {
-                // Upper sub-panel
-                pins.r1 = ((red & mask) == mask);
-                pins.g1 = ((green & mask) == mask);
-                pins.b1 = ((blue & mask) == mask);
-            } else {
-                // Lower sub-panel
-                pins.r2 = ((red & mask) == mask);
-                pins.g2 = ((green & mask) == mask);
-                pins.b2 = ((blue & mask) == mask);
-            }
+    private void writePixel(int row, int col, int red, int green, int blue, int b) {
+        byte mask = (byte) (1 << b);
+        RGBmatrixPanel.PixelPins pins = plane[b].row[row & 0xf].column[col];
+
+        if (row < 16) {
+            // Upper sub-panel
+            pins.r1 = ((red & mask) == mask);
+            pins.g1 = ((green & mask) == mask);
+            pins.b1 = ((blue & mask) == mask);
+        } else {
+            // Lower sub-panel
+            pins.r2 = ((red & mask) == mask);
+            pins.g2 = ((green & mask) == mask);
+            pins.b2 = ((blue & mask) == mask);
         }
     }
 }

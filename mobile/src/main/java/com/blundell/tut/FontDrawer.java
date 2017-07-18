@@ -81,7 +81,7 @@ class FontDrawer {
     }
 
     // Put a character on the display using glcd fonts.
-    private void putChar(int x, int y, char c, int size, int color) {
+    private void putChar(int col, int row, char c, int size, int color) {
         char[] font;
         short fontWidth;
         short fontHeight;
@@ -113,7 +113,7 @@ class FontDrawer {
 
             for (int j = 0; j < fontHeight + 1; j++) {
                 if ((line & 0x1) == 1) {
-                    pixelDrawer.drawPixel(x + i, y + j, color);
+                    pixelDrawer.drawPixel(col + i, row + j, color);
                 }
 
                 line >>= 1;

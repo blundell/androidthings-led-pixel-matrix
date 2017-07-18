@@ -103,16 +103,16 @@ class RGBmatrixPanel {
     public RGBmatrixPanel(GpioProxy gpioProxy) {
         this.gpioProxy = gpioProxy;
 
-        for (int i = 0; i < plane.length; i++) {
+        for (int p = 0; p < plane.length; p++) {
             Display display = new Display();
-            for (int j = 0; j < display.row.length; j++) {
+            for (int row = 0; row < display.row.length; row++) {
                 TwoRows twoRows = new TwoRows();
-                for (int k = 0; k < twoRows.column.length; k++) {
-                    twoRows.column[k] = new PixelPins();
+                for (int col = 0; col < twoRows.column.length; col++) {
+                    twoRows.column[col] = new PixelPins();
                 }
-                display.row[j] = twoRows;
+                display.row[row] = twoRows;
             }
-            plane[i] = display;
+            plane[p] = display;
         }
 
         PixelDrawer pixelDrawer = new PixelDrawerDisplayPlane(WIDTH, HEIGHT, PWM_BITS, plane);
@@ -350,8 +350,8 @@ class RGBmatrixPanel {
     }
 
     //
-    public void drawPixel(int x, int y, int color) {
-        shapeDrawer.drawPixel(x, y, color);
+    public void drawPixel(int row, int col, int color) {
+        shapeDrawer.drawPixel(row, col, color);
     }
 
     public void drawLine(int x0, int y0, int x1, int y1, int color) {

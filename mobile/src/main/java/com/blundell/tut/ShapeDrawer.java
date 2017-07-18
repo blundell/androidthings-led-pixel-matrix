@@ -27,9 +27,9 @@ class ShapeDrawer {
         maxY = (fy + fh) > height ? height : (fy + fh);
 
         for (int b = pwmBits - 1; b >= 0; b--) {
-            for (int x = fx; x < maxX; x++) {
-                for (int y = fy; y < maxY; y++) {
-                    pixelDrawer.drawPixel(x, y, Color.BLACK);
+            for (int col = fx; col < maxX; col++) {
+                for (int row = fy; row < maxY; row++) {
+                    pixelDrawer.drawPixel(col, row, Color.BLACK);
                 }
             }
         }
@@ -38,44 +38,44 @@ class ShapeDrawer {
     /**
      * Bresenham's Line Algorithm
      */
-    public void drawLine(int x0, int y0, int x1, int y1, int color) {
-        boolean steep = Math.abs(y1 - y0) > Math.abs(x1 - x0);
+    public void drawLine(int col0, int row0, int col1, int row1, int color) {
+        boolean steep = Math.abs(row1 - row0) > Math.abs(col1 - col0);
 
         if (steep) {
-            y0 = swap(x0, x0 = y0);
-            y1 = swap(x1, x1 = y1);
+            row0 = swap(col0, col0 = row0);
+            row1 = swap(col1, col1 = row1);
         }
 
-        if (x0 > x1) {
-            x1 = swap(x0, x0 = x1);
-            y1 = swap(y0, y0 = y1);
+        if (col0 > col1) {
+            col1 = swap(col0, col0 = col1);
+            row1 = swap(row0, row0 = row1);
         }
 
-        int dx, dy;
-        dx = x1 - x0;
-        dy = Math.abs(y1 - y0);
+        int dCol, dRow;
+        dCol = col1 - col0;
+        dRow = Math.abs(row1 - row0);
 
-        int err = dx / 2;
+        int err = dCol / 2;
         int ystep;
 
-        if (y0 < y1) {
+        if (row0 < row1) {
             ystep = 1;
         } else {
             ystep = -1;
         }
 
-        for (; x0 <= x1; x0++) {
+        for (; col0 <= col1; col0++) {
             if (steep) {
-                pixelDrawer.drawPixel(y0, x0, color);
+                pixelDrawer.drawPixel(row0, col0, color);
             } else {
-                pixelDrawer.drawPixel(x0, y0, color);
+                pixelDrawer.drawPixel(col0, row0, color);
             }
 
-            err -= dy;
+            err -= dRow;
 
             if (err < 0) {
-                y0 += ystep;
-                err += dx;
+                row0 += ystep;
+                err += dCol;
             }
         }
     }
@@ -462,7 +462,7 @@ class ShapeDrawer {
 //        }
     }
 
-    public void drawPixel(int x, int y, int color) {
-        pixelDrawer.drawPixel(x, y, color);
+    public void drawPixel(int row, int col, int color) {
+        pixelDrawer.drawPixel(row, col, color);
     }
 }
