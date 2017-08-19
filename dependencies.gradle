@@ -1,16 +1,16 @@
 ext {
     versions = [
             androidSdk: [
-                    compile   : 25,
-                    min       : 24,
-                    target    : 25,
-                    buildTools: '25.0.2'
+                    compile   : 26,
+                    min       : 26,
+                    target    : 26,
+                    buildTools: '26.0.0'
             ],
     ]
 
     libraries = [
             build                            : [
-                    androidGradle: 'com.android.tools.build:gradle:2.3.0'
+                    androidGradle: 'com.android.tools.build:gradle:2.3.3'
             ],
             jUnit                            : 'junit:junit:4.12',
     ]
